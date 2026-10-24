@@ -4,9 +4,9 @@
   "description": "Scalable production framework for ReactJS application using custom Webpack and Babel setups.",
   "main": "src/main.jsx",
   "scripts": {
-  "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.cjs --mode development",
-  "build": "cross-env NODE_ENV=production webpack --config webpack.config.cjs --mode production"
-},
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.cjs --mode development",
+    "build": "webpack --config webpack.config.cjs --mode production"
+  },
 
   "dependencies": {
     "react": "^18.3.1",
