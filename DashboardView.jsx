@@ -1,96 +1,73 @@
-import React, { useState } from 'react';
-import { useTasks } from '../context/TaskContext';
+import React, { useState, useEffect } from 'react';
+import { fetchServerDataRegistry } from '../services/apiService';
 import Button from '../components/common/Button';
-import InputField from '../components/common/InputField';
 import Card from '../components/common/Card';
 
 const DashboardView = () => {
-  const { tasks, addTask, toggleTaskStatus, deleteTask } = useTasks();
-  const [taskTitle, setTaskTitle] = useState('');
-  const [priorityLevel, setPriorityLevel] = useState('Medium');
-  const [validationError, setValidationError] = useState('');
+  const [nodes, setNodes] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [pipelineError, setPipelineError] = useState(null);
 
-  const executeRegistration = (e) => {
-    e.preventDefault();
-    if (!taskTitle.trim()) {
-      setValidationError('Sprint objective description title is mandatory.');
-      return;
+  // Core asynchronous orchestration utility
+  const synchroniseRemoteCluster = async () => {
+    setIsProcessing(true);
+    setPipelineError(null);
+    try {
+      const distributedDataset = await fetchServerDataRegistry();
+      setNodes(distributedDataset);
+    } catch (error) {
+      setPipelineError(error.message || 'Fatal data stream pipeline collapse occurred.');
+    } finally {
+      setIsProcessing(false);
     }
-    setValidationError('');
-    addTask(taskTitle, priorityLevel);
-    setTaskTitle('');
   };
+
+  // Trigger server queries automatically during initial layout mount
+  useEffect(() => {
+    synchroniseRemoteCluster();
+  }, []);
 
   return (
     <div style={{ padding: '24px', maxWidth: '700px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <form 
-        onSubmit={executeRegistration} 
-        style={{ backgroundColor: '#ffffff', padding: '24px', borderRadius: '8px', border: '1px solid #e1e4e8', marginBottom: '32px' }}
-      >
-        <h3 style={{ marginTop: 0, color: '#172b4d' }}>📋 Allocate Project Node Matrix</h3>
-        
-        <InputField 
-          label="Sprint Task Parameter" 
-          value={taskTitle} 
-          onChange={(e) => setTaskTitle(e.target.value)} 
-          error={validationError} 
-          placeholder="e.g., Configure Axios Instance Orchestrator" 
-          required 
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <Button 
+          label={isProcessing ? 'Interrogating Cluster...' : 'Synchronize Upstream Registry'} 
+          variant="primary" 
+          onClick={synchroniseRemoteCluster} 
+          isLoading={isProcessing} 
         />
-        
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500', color: '#172b4d' }}>Priority Weight</label>
-          <select 
-            value={priorityLevel} 
-            onChange={(e) => setPriorityLevel(e.target.value)}
-            style={{ width: '100%', padding: '10px', fontSize: '15px', borderRadius: '4px', border: '1px solid #c1c7d0', backgroundColor: '#ffffff', outline: 'none' }}
-          >
-            <option>High</option>
-            <option>Medium</option>
-            <option>Low</option>
-          </select>
+      </div>
+
+      {pipelineError && (
+        <div style={{ backgroundColor: '#ffebe6', color: '#de350b', padding: '16px', borderRadius: '6px', border: '1px solid #ffbdad', marginBottom: '24px' }}>
+          ❌ <strong>Asynchronous Exception Intercepted:</strong> {pipelineError}
         </div>
-        
-        <Button label="Deploy Task State" variant="primary" size="medium" type="submit" />
-      </form>
+      )}
 
       <div>
         <h3 style={{ color: '#172b4d', borderBottom: '2px solid #f4f5f7', paddingBottom: '8px' }}>
-          📡 Active Workspace Clusters ({tasks.length})
+          📡 Upstream Cloud Records ({nodes.length})
         </h3>
         
-        {tasks.length === 0 ? (
-          <p style={{ textAlign: 'center', color: '#7a869a', padding: '20px' }}>Zero active pipelines found. Initialize a node object above.</p>
+        {isProcessing ? (
+          <p style={{ textAlign: 'center', color: '#7a869a', padding: '20px' }}>🔄 Streaming live parameters from backend cloud node...</p>
         ) : null}
 
-        {tasks.map((task) => (
+        {!isProcessing && nodes.length === 0 && !pipelineError ? (
+          <p style={{ textAlign: 'center', color: '#7a869a' }}>Zero nodes active. Re-trigger pipeline synchronization above.</p>
+        ) : null}
+
+        {!isProcessing && nodes.map((node) => (
           <Card 
-            key={task.id} 
-            title={task.title} 
-            subtitle={`Allocated Vector: ${task.id} | Timestamp: ${task.timestamp} | Priority: ${task.priority}`} 
+            key={node.id} 
+            title={node.title} 
+            subtitle={`Node Cluster Link: upstream-0x${node.id} | Timestamp: ${node.timestamp}`}
             footerActions={
-              <>
-                <Button 
-                  label={task.status === 'Resolved' ? 'Activate Node' : 'Resolve State'} 
-                  variant="secondary" 
-                  size="small" 
-                  onClick={() => toggleTaskStatus(task.id)} 
-                />
-                <Button 
-                  label="Purge" 
-                  variant="danger" 
-                  size="small" 
-                  onClick={() => deleteTask(task.id)} 
-                />
-              </>
+              <Button label="De-allocate" variant="danger" size="small" onClick={() => setNodes(prev => prev.filter(t => t.id !== node.id))} />
             }
           >
-            <p style={{ margin: 0 }}>
-              System Operational Flag: {' '}
-              <strong style={{ color: task.status === 'Resolved' ? '#00875a' : '#de350b' }}>
-                {task.status}
-              </strong>
-            </p>
+            <p style={{ margin: '0 0 6px 0' }}>Priority Weight: <strong>{node.priority}</strong></p>
+            <p style={{ margin: 0 }}>Socket Pipeline Status: <span style={{ color: node.status === 'Resolved' ? '#00875a' : '#de350b', fontWeight: 'bold' }}>{node.status}</span></p>
           </Card>
         ))}
       </div>
