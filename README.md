@@ -21,37 +21,47 @@ This application is built leveraging a decoupled, feature-driven architecture ce
 
 ## 📁 Modular Directory Tree Schematic
 
-```text
-my-scalable-react-app/
-├── public/
-│   └── index.html                # App Root Mounting Canvas Node
-├── src/
-│   ├── assets/                   # Static Icons and Graphic Vector Assets
-│   ├── components/
-│   │   └── common/               # Atomic Leaf UI Primitives (CDD Framework)
-│   │       ├── Button.jsx        # Accessible Action Element (aria-busy tracking)
-│   │       ├── Card.jsx          # Semantic Content Envelope (<article> wrapper)
-│   │       ├── FormContainer.jsx # Interception Submitter Primitive
-│   │       ├── InputField.jsx    # Accessible Associated Input (useId coupled)
-│   │       └── Modal.jsx         # Focus-Managed Overlay (Escape key binding)
-│   ├── context/
-│   │   └── TaskContext.jsx       # Global State Container & Custom Providers
-│   ├── hooks/
-│   │   └── useLocalStorage.js    # Side-Effect Encapsulated State Storage Hook
-│   ├── services/
-│   │   └── apiService.js         # Unified Cloud Fetch Engine Factory
-│   ├── styles/
-│   │   └── variables.css         # Central CSS Variables Theme Tokens
-│   ├── views/
-│   │   └── DashboardView.jsx     # High-Level Canvas Orchestrating Components
-│   ├── App.jsx                   # Production Scoped Application Root Frame
-│   └── main.jsx                  # React Engine Mounting Script Point
-├── .babelrc                      # Compiler Transposition Map
-├── .eslintrc.json                # Quality Gate Compliance Ruleset
-├── .prettierrc                   # Formatting Standardization Ruleset
-├── package.json                  # Workspace Blueprint & Dependency Matrix
-└── webpack.config.js             # Asset Pipeline Optimization Settings
-```
+📂 my-scalable-react-app
+├── 📂 node_modules
+├── 📂 public
+│   └── 📄 index.html
+├── 📂 src
+│   ├── 📂 components
+│   │   └── 📂 common
+│   │       ├── 📄 Button.jsx
+│   │       ├── 📄 Button.test.jsx
+│   │       ├── 📄 Card.jsx
+│   │       ├── 📄 FormContainer.jsx
+│   │       ├── 📄 InputField.jsx
+│   │       └── 📄 Modal.jsx
+│   ├── 📂 context
+│   │   └── 📄 TaskContext.jsx
+│   ├── 📂 hooks
+│   │   ├── 📄 useLocalStorage.js
+│   │   └── 📄 useLocalStorage.test.js
+│   ├── 📂 services
+│   │   └── 📄 apiService.js
+│   ├── 📂 styles
+│   │   └── 📄 variables.css
+│   ├── 📂 views
+│   │   ├── 📂 assests
+│   │   │   ├── 📂 icons
+│   │   │   └── 📂 images
+│   │   ├── 📄 DashboardView.jsx
+│   │   └── 📄 DashboardView.test.jsx
+│   ├── 📄 App.jsx
+│   ├── 📄 main.jsx
+│   └── 📄 setupTests.js
+├── 📄 .gitignore
+├── 📄 babelrc
+├── 📄 eslintrc.json
+├── 📄 package-lock.json
+├── 📄 package.json
+├── 📄 prettierrc
+├── 📄 Project_Plan.md
+├── 📄 README.md
+└── 📄 webpack.config.cjs
+
 
 ---
 
