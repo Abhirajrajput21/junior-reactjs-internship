@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { TaskProvider } from './context/TaskContext';
+import { TaskProvider } from './styles/context/TaskContext'; 
 
 // Dynamic code splitting strategy to minimize initial bundle size overhead
 const DashboardView = lazy(() => import('./views/assests/DashboardView'));
