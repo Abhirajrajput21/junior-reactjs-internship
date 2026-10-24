@@ -4,7 +4,8 @@
  */
 export const fetchServerDataRegistry = async () => {
   try {
-    const response = await fetch('https://typicode.com');
+ const response = await fetch('https://typicode.com');
+
     
     // Explicitly intercept structural HTTP errors (e.g., 404, 500)
     if (!response.ok) {
