@@ -8,6 +8,7 @@ module.exports = {
     filename: 'assets/js/[name].[contenthash:8].js',
     chunkFilename: 'assets/js/[name].[contenthash:8].chunk.js',
     clean: true,
+    publicPath: './',
   },
   mode: 'development',
   devtool: 'cheap-module-source-map',
