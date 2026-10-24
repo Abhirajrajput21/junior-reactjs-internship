@@ -58,12 +58,13 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
-  plugins: [
+    plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: path.join(__dirname, 'public', 'index.html'),
       inject: 'body',
     }),
   ],
+
   optimization: {
     splitChunks: {
       chunks: 'all',
